@@ -95,7 +95,7 @@ router.beforeEach((to, from, next) => {
   next();
 });
 
-router.afterEach((to, from) => {
+router.afterEach((to) => {
   to.meta.title && (document.title = to.meta.title);
 });
 
