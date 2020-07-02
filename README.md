@@ -14,7 +14,7 @@ TODO
 
 - [x] switch
 - [x] button
-- [ ] checkbox
+- [x] input
 
 ## 一、基本框架搭建
 ### 1.1 CDN引入
@@ -90,10 +90,114 @@ router.beforeEach((to, from, next) => {
 3. 在router-view所在的文件里，通过读取vuex中的数据配置好keepAlive
 ```
 <keep-alive :include="keepAliveComponents">
-        <router-view class="router-view" />
+	<router-view class="router-view" />
 </keep-alive>
 ```
 
 ### 1.3 路由切换动画
+> 移动端的体验会稍好
+
+1. * 首先对页面栈计数，并且对每个页面第几个进入的都缓存到sessionStorage中;
+   * 通过比较前后两个路由的计数来确定是进还是出存入vuex;
+```js
+// 页面过渡动画
+let storage = window.sessionStorage;
+storage.clear();// 首次进入清除缓存
+
+let historyCount = storage.getItem("count") || 0;
+storage.setItem("/", "0");
+
+router.beforeEach((to, from, next) => {
+	let toIndex = storage.getItem(to.fullPath);
+	let fromIndex = storage.getItem(from.fullPath);
+
+	if (toIndex) {
+		if (fromIndex === null) {
+			// 入口页不过渡
+			store.commit("updateDirection", "");
+		} else if (Number(toIndex) < Number(fromIndex)) {
+			store.commit("updateDirection", "out");
+		} else {
+			store.commit("updateDirection", "in");
+		}
+	} else {
+		historyCount = Number(historyCount) + 1;
+		storage.setItem("count", String(historyCount));
+		to.fullPath !== "/" &&
+			storage.setItem(to.fullPath, String(historyCount));
+
+		if (from.name === null) {
+			// 入口页不过渡
+			store.commit("updateDirection", "");
+		} else {
+			store.commit("updateDirection", "in");
+		}
+	}
+	next();
+});
+
+```
+
+2. 通过transition包裹router-view，读取vuex的in或者out，作为路由切换动画
+```html
+<transition :name="transitionClass">
+    <keep-alive :include="keepAliveComponents">
+        <router-view class="router-view" />
+    </keep-alive>
+</transition>
+```
+```js
+import { mapState, mapGetters } from "vuex";
+export default {
+  computed: {
+    ...mapState(["keepAliveComponents"]),
+    ...mapGetters({
+      direction: "getDirection"
+    }),
+    transitionClass() {
+      return `slide-${this.direction}`;
+    }
+  }
+};
+```
+```css
+.slide-out-enter-active,
+.slide-out-leave-active,
+.slide-in-enter-active,
+.slide-in-leave-active {
+  will-change: transform;
+  transition: transform 350ms ease;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden;
+  perspective: 1000;
+}
+.slide-out-enter {
+  transform: translate3d(-15%, 0, 0);
+  /* 防止路由切换时底部栏被抬高 */
+  overflow-x: hidden;
+}
+.slide-out-leave-active {
+  transform: translate3d(100%, 0, 0);
+  /* 保持即将离开的页面在最上层 */
+  z-index: 2;
+}
+.slide-in-enter {
+  transform: translate3d(100%, 0, 0);
+}
+.slide-in-leave-active {
+  transform: translate3d(-15%, 0, 0);
+}
+.slide-in-leave {
+  /* 防止路由切换时底部栏被抬高 */
+  overflow-x: hidden;
+}
+```
+
+
+
+
+
+
 
 

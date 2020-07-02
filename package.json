@@ -10,6 +10,7 @@
   "dependencies": {
     "core-js": "^3.6.4",
     "dayjs": "^1.8.24",
+    "element-ui": "^2.13.2",
     "less": "^3.11.1",
     "less-loader": "^5.0.0",
     "vue": "^2.6.11",

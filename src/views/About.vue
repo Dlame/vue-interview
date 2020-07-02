@@ -55,21 +55,26 @@
             <my-button type="warning" plain disabled>按钮</my-button>
             <my-button type="danger" plain disabled>按钮</my-button>
         </div>
+        <h3>Input输入框</h3>
+        <my-input placeholder="请输入" v-model="inputValue" type="password" show-password></my-input>
     </div>
 </template>
 
 <script>
 import MySwitch from "@/components/myUI/switch.vue";
 import MyButton from "@/components/myUI/button.vue";
+import MyInput from "@/components/myUI/input.vue";
 export default {
     components: {
         MySwitch,
-        MyButton
+        MyButton,
+        MyInput
     },
     data() {
         return {
             switchValue: false,
-            switchValue2: false
+            switchValue2: false,
+            inputValue: ""
         };
     },
     computed: {},
@@ -85,7 +90,7 @@ export default {
 .my-switch {
     margin: 10px;
 }
-.my-button{
+.my-button {
     margin: 5px;
 }
 </style>
