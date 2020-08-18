@@ -57,6 +57,15 @@
         </div>
         <h3>Input输入框</h3>
         <my-input placeholder="请输入" v-model="inputValue" type="password" show-password></my-input>
+        <h3>dialog提示框</h3>
+        <my-button @click="showDialog=true">展示弹框</my-button>
+        <my-dialog :visible.sync="showDialog">
+            提示内容
+            <template slot="footer">
+                <my-button>取消</my-button>
+                <my-button type="primary">确定</my-button>
+            </template>
+        </my-dialog>
     </div>
 </template>
 
@@ -64,17 +73,20 @@
 import MySwitch from "@/components/myUI/switch.vue";
 import MyButton from "@/components/myUI/button.vue";
 import MyInput from "@/components/myUI/input.vue";
+import MyDialog from "@/components/myUI/dialog.vue";
 export default {
     components: {
         MySwitch,
         MyButton,
-        MyInput
+        MyInput,
+        MyDialog,
     },
     data() {
         return {
             switchValue: false,
             switchValue2: false,
-            inputValue: ""
+            inputValue: "",
+            showDialog: false,
         };
     },
     computed: {},
@@ -83,7 +95,7 @@ export default {
     //生命周期 - 创建完成（可以访问当前this实例）
     created() {},
     //生命周期 - 挂载完成（可以访问DOM元素）
-    mounted() {}
+    mounted() {},
 };
 </script>
 <style lang='less' scoped>

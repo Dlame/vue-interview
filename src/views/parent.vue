@@ -23,8 +23,8 @@ export default {
   data() {
     return {
       message: "组件一 通过props通信",
-      son: "hellow son",
-      grandson: "hellow grandson"
+      son: "hello son",
+      grandson: "hello grandson"
     };
   },
   created() {},
