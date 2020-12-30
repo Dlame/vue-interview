@@ -3,7 +3,7 @@
     <div>
       computed:
       <input v-model="computed_val" @change="computed_val_onChange" />
-      <div>{{computed_after_val}}</div>
+      <div>{{ computed_after_val }}</div>
     </div>
     <div>
       watch:
@@ -20,9 +20,9 @@
     <div>
       <div>
         filters:
-        {{filter_val}}
+        {{ filter_val }}
       </div>
-      after_filter:{{filter_val|dateFormat}}
+      after_filter:{{ filter_val | dateFormat }}
     </div>
     <son-life @hook:mounted="doMounted"></son-life>
   </div>
@@ -84,14 +84,14 @@ export default {
     computed_val_onChange(e) {
       console.log(e, this.computed_after_val);
     },
-    doMounted(){
-      console.log('父组件监听到子组件 mounted');
+    doMounted() {
+      console.log("父组件监听到子组件 mounted");
     }
   },
   beforeRouteLeave(to, from, next) {
     // ...
     console.log(to, from);
-    next(vm => {
+    next((vm) => {
       console.log(vm);
     });
   }

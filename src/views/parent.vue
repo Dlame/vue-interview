@@ -31,7 +31,7 @@ export default {
   mounted() {
     // this.$refs.childref.getMessage("组件二 通过ref通信");
     console.log(this.$children[1].message);
-    this.$root.eventHub.$on("getbyEventhub", msg => {
+    this.$root.eventHub.$on("getbyEventhub", (msg) => {
       console.log(msg);
     });
   },
